@@ -57,9 +57,11 @@ public function rigester(){
     $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email|min:10',
-            'password' => 'required|min:6'
+            'password' => 'required|min:6',
+            'con_password' => 'required|min:6'
         ]);
 
+ if ($request->password==$request->con_password) {
 
      $user= new User;
      $user->name = $request->name;
@@ -67,8 +69,13 @@ public function rigester(){
      $user->email = $request->email;
      $user->save();
 
-     Auth::login($user);
+    Auth::login($user);
 
      return redirect('/home');
+     }
+     else{
+         return redirect('/login')->with('The password id not confirmed');
+     }
+    
     }
 }
